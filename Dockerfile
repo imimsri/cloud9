@@ -72,7 +72,14 @@ RUN apt-get install -y munge curl gcc make bzip2 supervisor python python-dev \
     gfortran vim python-mpi4py python-numpy python-psutil sudo psmisc \
     software-properties-common python-software-properties iputils-ping \
     openssh-server openssh-client default-jdk
-RUN apt-get install -y slurm-wlm munge
+
+ENV SLURM_VER=16.05.3
+#RUN apt-get install -y slurm-wlm munge
+# Download, compile and install SLURM
+#RUN curl -fsL http://www.schedmd.com/download/total/slurm-${SLURM_VER}.tar.bz2 | tar xfj - -C /opt/ && \
+#    cd /opt/slurm-${SLURM_VER}/ && \
+#    ./configure && make && make install
+
 RUN chown root /var/log/munge
 RUN mkdir /var/run/munge
 RUN chown root /var/lib/munge
