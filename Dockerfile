@@ -64,8 +64,6 @@ RUN apt-get install -y \
 	&& rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
 	&& rm -rf /var/lib/apt/lists/*
 
-ADD userconf.sh /userconf.sh
-RUN chmod +x /userconf.sh
 ENV SLURM_VER=16.05.3
 
 RUN apt-get update && apt-get -y  dist-upgrade
@@ -84,4 +82,10 @@ RUN chown root /etc/munge
 RUN cd /usr/local/bin && curl -fsSL get.nextflow.io | bash
 RUN chmod +rw /usr/local/bin/nextflow
 RUN install2.r rslurm
-
+RUN chmod -R o+rw /c9
+USER docker
+RUN cd /home/docker && /c9/scripts/install-sdk.sh
+USER root
+ADD userconf.sh /userconf.sh
+RUN chmod +x /userconf.sh
+CMD "/userconf.sh"

@@ -1,8 +1,8 @@
-#!/usr/bin/with-contenv bash
+#!/bin/bash
 
 ## Set defaults for environmental variables in case they are undefined
-USER=${USER:=rstudio}
-PASSWORD=${PASSWORD:=rstudio}
+USER=${USER:=docker}
+PASSWORD=${PASSWORD:=docker}
 USERID=${USERID:=1000}
 ROOT=${ROOT:=FALSE}
 
@@ -10,20 +10,24 @@ ROOT=${ROOT:=FALSE}
 if [ "$USERID" -ne 1000 ]
 ## Configure user with a different USERID if requested.
   then
-    echo "deleting user rstudio"
-    userdel rstudio
+    #echo "deleting user docker"
+    #userdel docker
     echo "creating new $USER with UID $USERID"
     useradd -m $USER -u $USERID
-    mkdir /home/$USER
+    mkdir -p /home/$USER
     chown -R $USER /home/$USER
     usermod -a -G staff $USER
-elif [ "$USER" != "rstudio" ]
+    if [ ! -d "/home/$USER/.c9" ]; then 
+    	cp -r /home/docker/.c9 /home/$USER
+    	chown -R $USER /home/$USER/.c9
+    fi
+elif [ "$USER" != "docker" ]
   then
     ## cannot move home folder when it's a shared volume, have to copy and change permissions instead
-    cp -r /home/rstudio /home/$USER
+    cp -r /home/docker /home/$USER
     ## RENAME the user   
-    usermod -l $USER -d /home/$USER rstudio
-    groupmod -n $USER rstudio
+    usermod -l $USER -d /home/$USER docker
+    groupmod -n $USER docker
     usermod -a -G staff $USER
     chown -R $USER:$USER /home/$USER
     echo "USER is now $USER"  
@@ -38,3 +42,9 @@ if [ "$ROOT" == "TRUE" ]
     adduser $USER sudo && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
     echo "$USER added to sudoers"
 fi
+
+echo export HOME=/home/$USER >/home/$USER/c9.env
+echo export C9_DIR=/home/$USER/.c9 >>/home/$USER/c9.env
+echo export PATH="/home/$USER/.c9/node/bin/:/home/$USER/.c9/node_modules/.bin:$PATH" >>/home/$USER/c9.env
+
+su -l -c "source /home/$USER/c9.env && node /c9/server.js -w /home/$USER --listen 0.0.0.0 -a $USER:$PASSWORD" $USER
