@@ -95,4 +95,6 @@ RUN cd /home/docker && /c9/scripts/install-sdk.sh
 USER root
 ADD userconf.sh /userconf.sh
 RUN chmod +x /userconf.sh
+RUN mkdir /var/run/sshd
+RUN useradd slurm
 CMD "/userconf.sh"
