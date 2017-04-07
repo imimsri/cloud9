@@ -46,7 +46,7 @@ fi
 echo export HOME=/home/$USER >/home/$USER/c9.env
 echo export C9_DIR=/home/$USER/.c9 >>/home/$USER/c9.env
 echo export PATH="/home/$USER/.c9/node/bin/:/home/$USER/.c9/node_modules/.bin:$PATH" >>/home/$USER/c9.env
-echo export DOCKER_HOST: dind:2375 >>/home/$USER/c9.env
+echo export DOCKER_HOST=dind:2375 >>/home/$USER/c9.env
 
 
 su -l -c "source /home/$USER/c9.env && node /c9/server.js -w /home/$USER --listen 0.0.0.0 -a $USER:$PASSWORD" $USER
