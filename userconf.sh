@@ -18,7 +18,7 @@ if [ "$USERID" -ne 1000 ]
     chown -R $USER /home/$USER
     usermod -a -G staff $USER
     if [ ! -d "/home/$USER/.c9" ]; then 
-    	cp -r /home/docker/.c9 /home/$USER
+    	cp -r /templates/.c9 /home/$USER
     	chown -R $USER /home/$USER/.c9
     fi
 elif [ "$USER" != "docker" ]

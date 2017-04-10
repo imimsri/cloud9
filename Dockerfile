@@ -93,6 +93,8 @@ RUN chmod -R o+rw /c9
 USER docker
 RUN cd /home/docker && /c9/scripts/install-sdk.sh
 USER root
+RUN mkdir /templates
+RUN cp -r /home/docker/.c9 /templates
 ADD userconf.sh /userconf.sh
 RUN chmod +x /userconf.sh
 RUN mkdir /var/run/sshd
