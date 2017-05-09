@@ -4,6 +4,7 @@
 USER=${USER:=docker}
 PASSWORD=${PASSWORD:=docker}
 USERID=${USERID:=1000}
+GROUPID=${GROUPID:=1000}
 ROOT=${ROOT:=FALSE}
 
 
@@ -13,7 +14,7 @@ if [ "$USERID" -ne 1000 ]
     #echo "deleting user docker"
     #userdel docker
     echo "creating new $USER with UID $USERID"
-    useradd -m $USER -u $USERID
+    useradd -m $USER -u $USERID -g $GROUPID
     mkdir -p /home/$USER
     chown -R $USER /home/$USER
     usermod -a -G staff $USER
