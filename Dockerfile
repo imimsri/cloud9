@@ -86,8 +86,18 @@ RUN chown root /var/lib/munge
 RUN chown root /etc/munge/munge.key
 RUN chmod 600 /etc/munge/munge.key
 RUN chown root /etc/munge
+
+# Add singularity
+RUN apt-get update
+RUN apt-get -y install build-essential curl git sudo man vim autoconf libtool default-jdk
+RUN apt-get -y install python
+RUN git clone https://github.com/singularityware/singularity.git
+RUN cd singularity && ./autogen.sh && ./configure --prefix=/usr/local && make && make install
+#
+# Add nextflow
 RUN cd /usr/local/bin && curl -fsSL get.nextflow.io | bash
 RUN chmod +rw /usr/local/bin/nextflow
+
 RUN install2.r rslurm
 RUN chmod -R o+rw /c9
 USER docker
