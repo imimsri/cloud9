@@ -76,7 +76,7 @@ RUN apt-get install -y munge curl gcc make bzip2 supervisor python python-dev \
 ENV SLURM_VER=16.05.10-2
 #RUN apt-get install -y slurm-wlm munge
 # Download, compile and install SLURM
-RUN curl -fsL http://www.schedmd.com/downloads/latest/slurm-${SLURM_VER}.tar.bz2 | tar xfj - -C /opt/ && \
+RUN curl -fsL http://www.schedmd.com/downloads/archive/slurm-${SLURM_VER}.tar.bz2 | tar xfj - -C /opt/ && \
     cd /opt/slurm-${SLURM_VER}/ && \
     ./configure && make && make install
 
@@ -95,7 +95,7 @@ RUN git clone https://github.com/singularityware/singularity.git
 RUN cd singularity && ./autogen.sh && ./configure --prefix=/usr/local && make && make install
 #
 # Add nextflow
-RUN cd /usr/local/bin && curl -fsSL get.nextflow.io | bash
+RUN cd / && cd /usr/local/bin && curl -fsSL get.nextflow.io | bash
 RUN chmod +rw /usr/local/bin/nextflow
 
 RUN install2.r rslurm
