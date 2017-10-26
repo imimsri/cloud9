@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-RUN apt-get update && apt-get install -y curl wget build-essential gcc git make python2.7
+RUN apt-get update && apt-get install -y curl wget build-essential gcc git make python2.7 squashfs-tools
 RUN git clone https://github.com/c9/core.git /c9 && \
     cd /c9 && \
     scripts/install-sdk.sh
