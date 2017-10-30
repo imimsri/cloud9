@@ -89,10 +89,10 @@ RUN chown root /etc/munge
 
 # Add singularity
 RUN apt-get update
-RUN apt-get -y install build-essential curl git sudo man vim autoconf libtool default-jdk
+RUN apt-get -y install build-essential curl git man vim autoconf libtool default-jdk
 RUN apt-get -y install python
 RUN git clone https://github.com/singularityware/singularity.git
-RUN cd singularity && ./autogen.sh && ./configure --prefix=/usr/local && make && make install
+RUN cd singularity && git checkout development && ./autogen.sh && ./configure --prefix=/usr/local && make && make install
 #
 # Add nextflow
 RUN cd / && cd /usr/local/bin && curl -fsSL get.nextflow.io | bash
