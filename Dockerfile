@@ -64,7 +64,7 @@ RUN apt-get install -y \
 	&& rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
 	&& rm -rf /var/lib/apt/lists/*
 
-ENV SLURM_VER=16.05.10-2
+ENV SLURM_VER=16.05.11
 
 RUN apt-get update && apt-get -y  dist-upgrade
 RUN apt-get install -y munge curl gcc make bzip2 supervisor python python-dev \
@@ -73,10 +73,10 @@ RUN apt-get install -y munge curl gcc make bzip2 supervisor python python-dev \
     software-properties-common python-software-properties iputils-ping \
     openssh-server openssh-client default-jdk
 
-ENV SLURM_VER=16.05.10-2
+ENV SLURM_VER=16.05.11
 #RUN apt-get install -y slurm-wlm munge
 # Download, compile and install SLURM
-RUN curl -fsL http://www.schedmd.com/downloads/archive/slurm-${SLURM_VER}.tar.bz2 | tar xfj - -C /opt/ && \
+RUN curl -fsL https://download.schedmd.com/slurm/slurm-16.05.11.tar.bz2 | tar xfj - -C /opt/ && \
     cd /opt/slurm-${SLURM_VER}/ && \
     ./configure && make && make install
 
