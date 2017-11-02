@@ -1,5 +1,5 @@
 build:
-	docker build -t jmcarbo/cloud9 .
+	docker build -t imimsri/cloud9:development .
 
 run:
 	#docker run -ti --rm --cap-add=SYS_ADMIN -e USER=bla -e USERID=10001 -e PASSWORD=bla -p 8181:8181 -v $$PWD/data:/home/bla jmcarbo/cloud9

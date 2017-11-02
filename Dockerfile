@@ -42,9 +42,11 @@ ENV R_BASE_VERSION 3.3.3
 
 ## Now install R and littler, and create a link for littler in /usr/local/bin
 ## Also set a default CRAN repo, and make sure littler knows about it too
+ADD ubuntukey.pub /tmp
+RUN apt-key add /tmp/ubuntukey.pub
 RUN apt-get update 
 RUN apt-get install -y software-properties-common python-software-properties apt-transport-https
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+#RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv-keys E084DAB9
 RUN add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'
 
 RUN apt-get update 
@@ -92,7 +94,7 @@ RUN apt-get update
 RUN apt-get -y install build-essential curl git man vim autoconf libtool default-jdk
 RUN apt-get -y install python
 RUN git clone https://github.com/singularityware/singularity.git
-RUN cd singularity && git checkout -b development 68b38e2aad06b11eafd75b32e9fa68b040050aef  && ./autogen.sh && ./configure --prefix=/usr/local && make && make install
+RUN cd singularity && git checkout development && git checkout  68b38e2aad06b11eafd75b32e9fa68b040050aef  && ./autogen.sh && ./configure --prefix=/usr/local && make && make install
 #
 # Add nextflow
 RUN cd / && cd /usr/local/bin && curl -fsSL get.nextflow.io | bash
