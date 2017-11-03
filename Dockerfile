@@ -94,7 +94,7 @@ RUN apt-get update
 RUN apt-get -y install build-essential curl git man vim autoconf libtool default-jdk
 RUN apt-get -y install python
 RUN git clone https://github.com/singularityware/singularity.git
-RUN cd singularity && git checkout development && git checkout  68b38e2aad06b11eafd75b32e9fa68b040050aef  && ./autogen.sh && ./configure --prefix=/usr/local && make && make install
+RUN cd singularity && git checkout development && ./autogen.sh && ./configure --prefix=/usr/local && make && make install
 #
 # Add nextflow
 RUN cd / && cd /usr/local/bin && curl -fsSL get.nextflow.io | bash
