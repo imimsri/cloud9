@@ -72,7 +72,7 @@ ENV SLURM_VER=16.05.11
 RUN apt-get update && apt-get -y  dist-upgrade
 RUN apt-get install -y munge curl gcc make bzip2 supervisor python python-dev \
     libmunge-dev libmunge2 lua5.2 lua5.2-dev libopenmpi-dev openmpi-bin \
-    gfortran vim python-mpi4py python-numpy python-psutil sudo psmisc \
+    gfortran vim python-mpi4py python-numpy python-psutil psmisc \
     software-properties-common python-software-properties iputils-ping \
     openssh-server openssh-client default-jdk
 
