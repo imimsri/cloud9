@@ -23,7 +23,7 @@ RUN apt-get install -y --no-install-recommends \
 		vim-tiny \
 		wget \
 		ca-certificates \
-		fonts-texgyre \
+		fonts-texgyre 
 
 ## Configure default locale, see https://github.com/rocker-org/rocker/issues/19
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
@@ -42,12 +42,12 @@ ENV R_BASE_VERSION 3.3.3
 ## Now install R and littler, and create a link for littler in /usr/local/bin
 ## Also set a default CRAN repo, and make sure littler knows about it too
 ADD ubuntukey.pub /tmp
-RUN apt-key add /tmp/ubuntukey.pub
-RUN add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'
 RUN apt-get update 
 RUN apt-get install -y software-properties-common python-software-properties apt-transport-https
+RUN apt-key add /tmp/ubuntukey.pub
+RUN add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'
 
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
 		littler \
                 r-cran-littler \
 		r-base=${R_BASE_VERSION}* \
