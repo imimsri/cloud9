@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-RUN apt-get update && apt-get install -y curl wget build-essential gcc git \
+RUN apt-get update && apt-get -y dist-upgrade && apt-get install -y curl wget build-essential gcc git \
      make python2.7 squashfs-tools libblas-dev liblapack-dev
 RUN git clone https://github.com/c9/core.git /c9 && \
     cd /c9 && \
@@ -16,8 +16,7 @@ RUN useradd -u 1000 docker \
 	&& chown docker:docker /home/docker \
 	&& addgroup docker staff
 
-RUN apt-get update \ 
-	&& apt-get install -y --no-install-recommends \
+RUN apt-get install -y --no-install-recommends \
 		ed \
 		less \
 		locales \
@@ -25,7 +24,6 @@ RUN apt-get update \
 		wget \
 		ca-certificates \
 		fonts-texgyre \
-	&& rm -rf /var/lib/apt/lists/*
 
 ## Configure default locale, see https://github.com/rocker-org/rocker/issues/19
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
@@ -45,12 +43,10 @@ ENV R_BASE_VERSION 3.3.3
 ## Also set a default CRAN repo, and make sure littler knows about it too
 ADD ubuntukey.pub /tmp
 RUN apt-key add /tmp/ubuntukey.pub
+RUN add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'
 RUN apt-get update 
 RUN apt-get install -y software-properties-common python-software-properties apt-transport-https
-#RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv-keys E084DAB9
-RUN add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'
 
-RUN apt-get update 
 RUN apt-get install -y \
 		littler \
                 r-cran-littler \
@@ -65,11 +61,9 @@ RUN apt-get install -y \
 	&& ln -s /usr/share/doc/littler/examples/testInstalled.r /usr/local/bin/testInstalled.r \
 	&& install.r docopt \
 	&& rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
-	&& rm -rf /var/lib/apt/lists/*
 
 ENV SLURM_VER=16.05.11
 
-RUN apt-get update && apt-get -y  dist-upgrade
 RUN apt-get install -y munge curl gcc make bzip2 supervisor python python-dev \
     libmunge-dev libmunge2 lua5.2 lua5.2-dev libopenmpi-dev openmpi-bin \
     gfortran vim python-mpi4py python-numpy python-psutil psmisc \
@@ -91,7 +85,6 @@ RUN chmod 600 /etc/munge/munge.key
 RUN chown root /etc/munge
 
 # Add singularity
-RUN apt-get update
 RUN apt-get -y install build-essential curl git man vim autoconf libtool default-jdk
 RUN apt-get -y install python
 RUN git clone https://github.com/singularityware/singularity.git
@@ -112,4 +105,5 @@ ADD userconf.sh /userconf.sh
 RUN chmod +x /userconf.sh
 RUN mkdir /var/run/sshd
 RUN useradd slurm
+RUN rm -rf /var/lib/apt/lists/*
 CMD "/userconf.sh"
